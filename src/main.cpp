@@ -23,12 +23,11 @@ Adafruit_BME280 bme280;
 
 #include "ui.h"
 
-// BUSY -> 4, RST -> 16, DC -> 17, CS -> SS(5), CLK -> SCK(18), DIN -> MOSI(23), GND -> GND, 3.3V -> 3.3V
+GxEPD2_DISPLAY_CLASS<GxEPD2_DRIVER_CLASS, MAX_HEIGHT(GxEPD2_DRIVER_CLASS)> display(GxEPD2_DRIVER_CLASS(/*CS=*/ 15, /*DC=*/ 27, /*RST=*/ 26, /*BUSY=*/ 25)); // Waveshare ESP32 Driver Board
+#undef MAX_DISPLAY_BUFFER_SIZE
+#undef MAX_HEIGHT
 
-// GxIO_Class  io(SPI, CS, MOSI, RST, BL);
-// GxEPD_Class display(io, rst, busy);
-GxIO_Class     io(SPI, SS, 17, 16);
-GxEPD_Class    display(io, 16, 4);
+SPIClass hspi(HSPI);
 
 ClockUI clock_ui(&display);
 
@@ -92,6 +91,9 @@ void setup() {
   randomSeed(analogRead(0));
   Serial.begin(115200);
   Serial.println("Hello world");
+
+  hspi.begin(13, 12, 14, 15); // remap hspi for EPD (swap pins)
+  display.epd2.selectSPI(hspi, SPISettings(4000000, MSBFIRST, SPI_MODE0));
 
   WiFi.macAddress(mac_address);
   snprintf(hostname, sizeof(hostname), "eink-clock-%02x%02x%02x", (int)mac_address[3], (int)mac_address[4], (int)mac_address[5]);
@@ -175,7 +177,7 @@ void setup() {
   start_showing_clock = millis() + 1 * 1000;
 
 #if 0
-  display.update();
+  display.display();
 #endif
 
   ArduinoOTA.begin();
@@ -264,17 +266,17 @@ void loop_rehab() {
   switch(submode) {
   case 0:
     display.fillScreen(GxEPD_WHITE);
-    display.update();
+    display.display();
     submode++;
     break;
   case 1:
     display.fillScreen(GxEPD_BLACK);
-    display.update();
+    display.display();
     submode++;
     break;
   case 2:
     display.fillScreen(GxEPD_WHITE);
-    display.update();
+    display.display();
     submode++;
     break;
   case 3:
@@ -288,7 +290,7 @@ void loop_rehab() {
 	  for(int j = 0; j < 5 ; j++)
 	    display.drawPixel(x+i+5, y+j+5, GxEPD_BLACK);
       }
-    display.update();
+    display.display();
     submode++;
     break;
   case 4:
@@ -302,7 +304,7 @@ void loop_rehab() {
 	  for(int j = 0; j < 5 ; j++)
 	    display.drawPixel(x+i+5, y+j+5, GxEPD_WHITE);
       }
-    display.update();
+    display.display();
     submode++;
     break;
   case 5:

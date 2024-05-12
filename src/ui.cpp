@@ -25,21 +25,21 @@ void ClockUI::begin() {
 
   show_wifi_symbol();
   
-  _display->update();
+  _display->display();
 }
 
 
 void ClockUI::show_wifi_symbol() {
   _display->fillScreen(GxEPD_WHITE);
-  _display->drawBitmap(wifi_symbol, 69, 19, 262, 193, GxEPD_BLACK);
-  _display->update();
+  _display->drawInvertedBitmap(69, 19, wifi_symbol, 262, 193, GxEPD_BLACK);
+  _display->display();
 }
 
 void ClockUI::clear_wifi_symbol() {
   _display->fillRect(69, 19, 262, 193, GxEPD_WHITE);
   // _display->fillScreen(GxEPD_WHITE);
-  _display->updateWindow(69, 19, 262, 193);
-  _display->update();
+  _display->displayWindow(69, 19, 262, 193);
+  _display->display();
 }
 
 void ClockUI::show_network_info(IPAddress local_ip, const char* name, const char* ssid) {
@@ -55,17 +55,17 @@ void ClockUI::show_network_info(IPAddress local_ip, const char* name, const char
   
   _display->printf("Name: %s.local", name);
 
-  _display->updateWindow(0, 0, 400, 100);
+  _display->displayWindow(0, 0, 400, 100);
 }
 
 void ClockUI::clear_network_info() {
   _display->fillRect(10, 10, 200, 200, GxEPD_WHITE);
-  _display->updateWindow(10, 10, 200, 200);
+  _display->displayWindow(10, 10, 200, 200);
 }
 
 void ClockUI::setup_time() {
   _display->drawRect(0, 220, 400, 222, GxEPD_BLACK);
-  _display->updateWindow(0, 220, 400, 222);
+  _display->displayWindow(0, 220, 400, 222);
 }
 
 void ClockUI::show_time(struct tm *timeinfo) {
@@ -96,12 +96,12 @@ void ClockUI::show_time(struct tm *timeinfo) {
   _display->getTextBounds("16:17", 0, 0, &x, &y, &w, &h);
   Serial.printf("x %d, y %d, w %d, h %d\n", x, y, w, h);
 
-  _display->updateWindow(0, 0, 400, 199);
+  _display->displayWindow(0, 0, 400, 199);
 }
 
 void ClockUI::clear_time() {
   _display->fillRect(10, 10, 200, 200, GxEPD_WHITE);
-  _display->updateWindow(10, 10, 200, 200);
+  _display->displayWindow(10, 10, 200, 200);
 }
 
 void ClockUI::show_indoor(float temperature, float humidity) {
@@ -116,7 +116,7 @@ void ClockUI::show_indoor(float temperature, float humidity) {
 
   _display->setCursor(0, 270);
   _display->printf("%d %d%%\n", (int)temperature, (int)humidity);
-  _display->updateWindow(0, 224, 200, 300);
+  _display->displayWindow(0, 224, 200, 300);
 }
 
 void ClockUI::show_outdoor(float temperature, float humidity) {
@@ -132,7 +132,7 @@ void ClockUI::show_outdoor(float temperature, float humidity) {
   _display->setCursor(200, 270);
   _display->printf("%d %d%%", (int)temperature, (int)humidity);
 
-  _display->updateWindow(200, 224, 400, 300);
+  _display->displayWindow(200, 224, 400, 300);
 }
 
 
@@ -140,7 +140,7 @@ void ClockUI::test() {
   //  _display->setFont(f);
 
   _display->fillScreen(GxEPD_WHITE);
-  _display->update();
+  _display->display();
   Serial.println("1");
 
   _display->setTextColor(GxEPD_BLACK);
@@ -153,7 +153,7 @@ void ClockUI::test() {
   Serial.printf("x %d, y %d, w %d, h %d\n", x, y, w, h);
 
   _display->println("16:17:05");
-  _display->update();
+  _display->display();
 
   delay(8000);
 
@@ -161,15 +161,15 @@ void ClockUI::test() {
 
   _display->setTextSize(1);
   _display->println(1234.56);
-  //  _display->updateWindow(0, 0, 200, 200);
-  _display->update();
+  //  _display->displayWindow(0, 0, 200, 200);
+  _display->display();
   Serial.println("2");
   delay(2500);
 
   _display->setTextSize(3);
   _display->println(0xDEADBEEF, HEX);
   _display->println();
-  _display->update();
+  _display->display();
   Serial.println("3");
   delay(2500);
 
@@ -179,7 +179,7 @@ void ClockUI::test() {
   _display->setTextSize(2);
   _display->println("I implore thee,");
   _display->setTextSize(1);
-  _display->update();
+  _display->display();
   Serial.println("4");
   delay(2500);
 
@@ -190,7 +190,7 @@ void ClockUI::test() {
   _display->println("in the gobberwarts");
   _display->println("with my blurglecruncheon,");
   _display->println("see if I don't!");
-  _display->update();
+  _display->display();
   Serial.println("5");
   delay(2500);
 }
