@@ -135,7 +135,9 @@ void setup() {
     Serial.println("[mDNS]");
 
   Serial.println("[NTP]");
-  configTime(TZ_OFFSET, DST_OFFSET, "pool.ntp.org", "time.nist.gov");
+  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  setenv("TZ", TZ_STRING, 1);
+  tzset();
 
   Serial.println("[OTA]");
   ArduinoOTA.setHostname(hostname);
