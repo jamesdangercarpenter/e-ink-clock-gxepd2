@@ -1,6 +1,7 @@
 #include "ui.h"
 
 #include <Fonts/FreeMonoBold24pt7b.h>
+#include "fonts/FreeMonoBold18pt7b_mod.h"
 #include "fonts/digital7mono967b.h"
 #include "fonts/weather-icons-regular24pt7b.h"
 
@@ -8,7 +9,7 @@
 
 
 static const GFXfont* f12 = &FreeMonoBold12pt7b;
-static const GFXfont* f18 = &FreeMonoBold18pt7b;
+static const GFXfont* f18 = &FreeMonoBold18pt7b_mod;
 static const GFXfont* f24 = &FreeMonoBold24pt7b;
 
 static const GFXfont* f96 = &digital_7__mono_96pt7b;
@@ -79,15 +80,15 @@ void ClockUI::show_time(struct tm *timeinfo) {
   _display->setTextWrap(false);
   _display->setTextColor(GxEPD_BLACK, GxEPD_WHITE);
 
-  _display->setCursor(0, 140);
+  _display->setCursor(5, 140);
   _display->printf("%02d%02d", timeinfo->tm_hour, timeinfo->tm_min);
 
   _display->setFont(f18);
-  _display->setCursor(400-48, 140);
+  _display->setCursor(400-53, 140);
   _display->printf("%02d", timeinfo->tm_sec);
 
   _display->setFont(f18);
-  _display->setCursor(0, 210-24);
+  _display->setCursor(30, 210-24);
   _display->printf("%s %s %d %d", days[timeinfo->tm_wday], months[timeinfo->tm_mon], timeinfo->tm_mday, 1900 + timeinfo->tm_year);
 
   int16_t x, y;
@@ -107,30 +108,36 @@ void ClockUI::clear_time() {
 void ClockUI::show_indoor(float temperature, float humidity) {
   //temperature = (temperature * 9 / 5) + 32 - 3.2;
 
-  _display->setFont(f24);
-
   _display->fillRect(0, 224, 200, 300, GxEPD_WHITE);
   _display->setTextSize(1);
   _display->setTextWrap(false);
   _display->setTextColor(GxEPD_BLACK, GxEPD_WHITE);
 
-  _display->setCursor(0, 270);
-  _display->printf("%dC %d%%\n", (int)temperature, (int)humidity);
+  _display->setFont(f12);
+  _display->setCursor(25, 250);
+  _display->printf("Indoor:");
+
+  _display->setFont(f18);
+  _display->setCursor(25, 280);
+  _display->printf("%d*C %d%%\n", (int)temperature, (int)humidity);
   _display->displayWindow(0, 224, 200, 300);
 }
 
 void ClockUI::show_outdoor(float temperature, float humidity) {
   //temperature = (temperature * 9 / 5) + 32 - 3.2;
 
-  _display->setFont(f24);
-
   _display->fillRect(200, 224, 400, 300, GxEPD_WHITE);
   _display->setTextSize(1);
   _display->setTextWrap(false);
   _display->setTextColor(GxEPD_BLACK, GxEPD_WHITE);
 
-  _display->setCursor(200, 270);
-  _display->printf("%dC %d%%", (int)temperature, (int)humidity);
+  _display->setFont(f12);
+  _display->setCursor(220, 250);
+  _display->printf("Outdoor:");
+
+  _display->setFont(f18);
+  _display->setCursor(225, 280);
+  _display->printf("%d*C %d%%", (int)temperature, (int)humidity);
 
   _display->displayWindow(200, 224, 400, 300);
 }
