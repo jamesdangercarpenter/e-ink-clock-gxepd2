@@ -31,7 +31,7 @@ void ClockUI::begin() {
 
 void ClockUI::show_wifi_symbol() {
   _display->fillScreen(GxEPD_WHITE);
-  _display->drawInvertedBitmap(69, 19, wifi_symbol, 262, 193, GxEPD_BLACK);
+  _display->drawBitmap(69, 19, wifi_symbol, 262, 193, GxEPD_BLACK);
   _display->display();
 }
 
@@ -105,7 +105,7 @@ void ClockUI::clear_time() {
 }
 
 void ClockUI::show_indoor(float temperature, float humidity) {
-  temperature = (temperature * 9 / 5) + 32 - 3.2;
+  //temperature = (temperature * 9 / 5) + 32 - 3.2;
 
   _display->setFont(f24);
 
@@ -115,12 +115,12 @@ void ClockUI::show_indoor(float temperature, float humidity) {
   _display->setTextColor(GxEPD_BLACK, GxEPD_WHITE);
 
   _display->setCursor(0, 270);
-  _display->printf("%d %d%%\n", (int)temperature, (int)humidity);
+  _display->printf("%dC %d%%\n", (int)temperature, (int)humidity);
   _display->displayWindow(0, 224, 200, 300);
 }
 
 void ClockUI::show_outdoor(float temperature, float humidity) {
-  temperature = (temperature * 9 / 5) + 32 - 3.2;
+  //temperature = (temperature * 9 / 5) + 32 - 3.2;
 
   _display->setFont(f24);
 
@@ -130,7 +130,7 @@ void ClockUI::show_outdoor(float temperature, float humidity) {
   _display->setTextColor(GxEPD_BLACK, GxEPD_WHITE);
 
   _display->setCursor(200, 270);
-  _display->printf("%d %d%%", (int)temperature, (int)humidity);
+  _display->printf("%dC %d%%", (int)temperature, (int)humidity);
 
   _display->displayWindow(200, 224, 400, 300);
 }

@@ -216,6 +216,7 @@ void owm_conditions() {
   static float last_outdoor_humidity = 0;
 
   OpenWeatherMapConditions current = owm.current();
+  Serial.println(owm.last_error());
 
   clock_ui.show_outdoor(current.temp, current.humidity);
 }
