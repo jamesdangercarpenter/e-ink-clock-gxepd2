@@ -83,6 +83,9 @@ void command_callback(const char* topic, byte* payload, unsigned int length);
 
 void setup() {
   byte mac_address[6];
+  // Set BME280 power pin high
+  pinMode(23, OUTPUT);
+  digitalWrite(23, HIGH);
 
   bootCount++;
   
